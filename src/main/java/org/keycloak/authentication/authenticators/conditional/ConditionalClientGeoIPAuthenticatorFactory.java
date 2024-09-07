@@ -11,7 +11,7 @@ import java.util.List;
 import static org.keycloak.provider.ProviderConfigProperty.BOOLEAN_TYPE;
 import static org.keycloak.provider.ProviderConfigProperty.MULTIVALUED_STRING_TYPE;
 
-public class ConditionalClientIpAddressAuthenticatorFactory implements ConditionalAuthenticatorFactory {
+public class ConditionalClientGeoIPAuthenticatorFactory implements ConditionalAuthenticatorFactory {
 
     public static final String PROVIDER_ID = "conditional-client-ip-address";
 
@@ -88,6 +88,6 @@ public class ConditionalClientIpAddressAuthenticatorFactory implements Condition
 
     @Override
     public ConditionalAuthenticator getSingleton() {
-        return ConditionalClientIpAddressAuthenticator.SINGLETON;
+        return ConditionalClientGeoIPAuthenticator.SINGLETON;
     }
 }

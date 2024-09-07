@@ -16,15 +16,15 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import static java.text.MessageFormat.format;
-import static org.keycloak.authentication.authenticators.conditional.ConditionalClientIpAddressAuthenticatorFactory.CONF_EXCLUDE;
-import static org.keycloak.authentication.authenticators.conditional.ConditionalClientIpAddressAuthenticatorFactory.CONF_IP_RANGES;
+import static org.keycloak.authentication.authenticators.conditional.ConditionalClientGeoIPAuthenticatorFactory.CONF_EXCLUDE;
+import static org.keycloak.authentication.authenticators.conditional.ConditionalClientGeoIPAuthenticatorFactory.CONF_IP_RANGES;
 import static org.keycloak.models.Constants.CFG_DELIMITER_PATTERN;
 
-public class ConditionalClientIpAddressAuthenticator implements ConditionalAuthenticator {
+public class ConditionalClientGeoIPAuthenticator implements ConditionalAuthenticator {
 
-    public static final ConditionalClientIpAddressAuthenticator SINGLETON = new ConditionalClientIpAddressAuthenticator();
+    public static final ConditionalClientGeoIPAuthenticator SINGLETON = new ConditionalClientGeoIPAuthenticator();
 
-    private static final Logger LOG = Logger.getLogger(ConditionalClientIpAddressAuthenticator.class);
+    private static final Logger LOG = Logger.getLogger(ConditionalClientGeoIPAuthenticator.class);
     private static final String X_FORWARDED_FOR_HEADER_NAME = "X-Forwarded-For";
 
     @Override
