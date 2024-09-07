@@ -13,10 +13,11 @@ import static org.keycloak.provider.ProviderConfigProperty.MULTIVALUED_STRING_TY
 
 public class ConditionalClientGeoIPAuthenticatorFactory implements ConditionalAuthenticatorFactory {
 
-    public static final String PROVIDER_ID = "conditional-client-ip-address";
+    public static final String PROVIDER_ID = "conditional-client-geoip-address";
 
-    public static final String CONF_IP_RANGES = "ip-ranges";
+    public static final String CONF_COUNTRIES = "countries";
     public static final String CONF_EXCLUDE = "exclude";
+    public static final String CONF_NO_COUNTRY = "no-country";
 
     private static final AuthenticationExecutionModel.Requirement[] REQUIREMENT_CHOICES = new AuthenticationExecutionModel.Requirement[]{
             AuthenticationExecutionModel.Requirement.REQUIRED,
@@ -45,7 +46,7 @@ public class ConditionalClientGeoIPAuthenticatorFactory implements ConditionalAu
 
     @Override
     public String getDisplayType() {
-        return "Condition - IP range";
+        return "Condition - Country";
     }
 
     @Override
@@ -65,25 +66,31 @@ public class ConditionalClientGeoIPAuthenticatorFactory implements ConditionalAu
 
     @Override
     public String getHelpText() {
-        return "Flow is executed only if the client ip address is in specified ip ranges / subnets";
+        return "Flow is executed only if the client country is in specified countries list";
     }
 
     @Override
     public List<ProviderConfigProperty> getConfigProperties() {
-        final ProviderConfigProperty ipRanges = new ProviderConfigProperty();
-        ipRanges.setType(MULTIVALUED_STRING_TYPE);
-        ipRanges.setName(CONF_IP_RANGES);
-        ipRanges.setDefaultValue("a:b:c:d::/64");
-        ipRanges.setLabel("IP ranges / subnets");
-        ipRanges.setHelpText("A list of IP ranges. Supports IPv6 and IPv4, supports CIDR and netmask notation. Examples: a:b:c:d::/64, a.b.c.d/255.255.0.0");
+        final ProviderConfigProperty countries = new ProviderConfigProperty();
+        countries.setType(MULTIVALUED_STRING_TYPE);
+        countries.setName(CONF_COUNTRIES);
+        countries.setDefaultValue("FR");
+        countries.setLabel("Countries");
+        countries.setHelpText("A list of country ISO codes. Example: FR,US");
 
         final ProviderConfigProperty exclude = new ProviderConfigProperty();
         exclude.setType(BOOLEAN_TYPE);
         exclude.setName(CONF_EXCLUDE);
-        exclude.setLabel("Exclude specified ranges");
-        exclude.setHelpText("Match if client IP address is NOT in specified ranges");
+        exclude.setLabel("Exclude specified countries");
+        exclude.setHelpText("Match if client country is NOT in specified countries");
 
-        return Arrays.asList(ipRanges, exclude);
+        final ProviderConfigProperty nocountry = new ProviderConfigProperty();
+        nocountry.setType(BOOLEAN_TYPE);
+        nocountry.setName(CONF_NO_COUNTRY);
+        nocountry.setLabel("Match if country can not be determined");
+        nocountry.setHelpText("Match if country can not be determined");
+
+        return Arrays.asList(countries, exclude, nocountry);
     }
 
     @Override

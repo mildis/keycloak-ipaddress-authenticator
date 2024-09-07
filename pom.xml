@@ -5,13 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.keycloak</groupId>
-    <artifactId>keycloak-ipaddress-authenticator</artifactId>
-    <version>${keycloak.version}_0</version>
-    <name>Keycloak IP-Address Authenticator</name>
+    <artifactId>keycloak-geoip-authenticator</artifactId>
+    <version>25.0.4_0</version>
+    <name>Keycloak GeoIP Authenticator</name>
 
     <properties>
         <keycloak.version>25.0.4</keycloak.version>
         <seancfoley.ipaddress.version>5.5.1</seancfoley.ipaddress.version>
+        <geoip2.version>4.2.0</geoip2.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -24,7 +25,11 @@
             <artifactId>ipaddress</artifactId>
             <version>${seancfoley.ipaddress.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.maxmind.geoip2</groupId>
+            <artifactId>geoip2</artifactId>
+            <version>${geoip2.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.keycloak</groupId>
             <artifactId>keycloak-core</artifactId>
