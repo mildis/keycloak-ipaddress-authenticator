@@ -1,6 +1,8 @@
-package org.keycloak.authentication.authenticators.conditional;
+package org.mildis.keycloak;
 
 import org.keycloak.Config;
+import org.keycloak.authentication.authenticators.conditional.ConditionalAuthenticator;
+import org.keycloak.authentication.authenticators.conditional.ConditionalAuthenticatorFactory;
 import org.keycloak.models.AuthenticationExecutionModel;
 import org.keycloak.models.KeycloakSessionFactory;
 import org.keycloak.provider.ProviderConfigProperty;
@@ -8,13 +10,13 @@ import org.keycloak.provider.ProviderConfigProperty;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.keycloak.provider.ProviderConfigProperty.BOOLEAN_TYPE;
-import static org.keycloak.provider.ProviderConfigProperty.MULTIVALUED_STRING_TYPE;
+import static org.keycloak.provider.ProviderConfigProperty.*;
 
 public class ConditionalClientGeoIPAuthenticatorFactory implements ConditionalAuthenticatorFactory {
 
     public static final String PROVIDER_ID = "conditional-client-geoip-address";
 
+    public static final String CONF_MMDB = "mmdb";
     public static final String CONF_COUNTRIES = "countries";
     public static final String CONF_EXCLUDE = "exclude";
     public static final String CONF_NO_COUNTRY = "no-country";
@@ -71,6 +73,13 @@ public class ConditionalClientGeoIPAuthenticatorFactory implements ConditionalAu
 
     @Override
     public List<ProviderConfigProperty> getConfigProperties() {
+        final ProviderConfigProperty mmdb = new ProviderConfigProperty();
+        mmdb.setType(STRING_TYPE);
+        mmdb.setName(CONF_MMDB);
+        mmdb.setDefaultValue("GeoLite2-Country.mmdb");
+        mmdb.setLabel("MaxMind DB filename");
+        mmdb.setHelpText("MaxMind DB filename to use");
+
         final ProviderConfigProperty countries = new ProviderConfigProperty();
         countries.setType(MULTIVALUED_STRING_TYPE);
         countries.setName(CONF_COUNTRIES);
@@ -90,7 +99,7 @@ public class ConditionalClientGeoIPAuthenticatorFactory implements ConditionalAu
         nocountry.setLabel("Match if country can not be determined");
         nocountry.setHelpText("Match if country can not be determined");
 
-        return Arrays.asList(countries, exclude, nocountry);
+        return Arrays.asList(mmdb, countries, exclude, nocountry);
     }
 
     @Override
