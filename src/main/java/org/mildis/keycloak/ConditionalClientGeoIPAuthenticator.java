@@ -49,7 +49,7 @@ public class ConditionalClientGeoIPAuthenticator implements ConditionalAuthentic
         }
 
         String clientCountry = getClientCountry(context);
-        LOG.error("Client country: " + clientCountry);
+        LOG.debug("Client country: " + clientCountry);
 
         if (clientCountry.isEmpty()) {
             LOG.warn("Client country is empty");
@@ -59,14 +59,14 @@ public class ConditionalClientGeoIPAuthenticator implements ConditionalAuthentic
         boolean countryMatch = false;
 
         if (exclude) {
-            LOG.error("Excluding country list");
+            LOG.debug("Excluding country list");
             countryMatch = countries.noneMatch(country -> country.equalsIgnoreCase(clientCountry));
         } else {
-            LOG.error("Including country list");
+            LOG.debug("Including country list");
             countryMatch = countries.anyMatch(country -> country.equalsIgnoreCase(clientCountry));
         }
 
-        LOG.error("Country match: " + countryMatch);
+        LOG.debug("Country match: " + countryMatch);
         return countryMatch;
     }
 
@@ -74,13 +74,17 @@ public class ConditionalClientGeoIPAuthenticator implements ConditionalAuthentic
 
         final String countriesAsString = config.get(CONF_COUNTRIES);
         if (countriesAsString == null) {
-            throw new IllegalStateException("No countries configured");
+            LOG.error("No countries configured (null)");
+            throw new IllegalStateException("No countries configured (null)");
         }
 
         final String[] countries = CFG_DELIMITER_PATTERN.split(countriesAsString);
         if (countries.length == 0) {
-            throw new IllegalStateException("No countries configured");
+            LOG.error("No countries configured (empty)");
+            throw new IllegalStateException("No countries configured (empty)");
         }
+
+        LOG.debug("Configured countries : " + Arrays.toString(countries));
 
         return Arrays.stream(countries)
                 .map(String::trim)
